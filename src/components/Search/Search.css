@@ -1,0 +1,17 @@
+.saerchAutoComplete{
+    width: 75%;
+    margin: 40px 0;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+.searchContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
