@@ -1,34 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export const useFetch = () => {
   const [query, setQuery] = useState("");
   const [data, setData] = useState({
-    isLoadind: false,
+    isLoading: false,
     data: null,
     onError: null,
   });
 
-  async function getDta() {
-    setData({ isLoadind: true });
+  const getData = useCallback(async () => {
+    setData({ isLoading: true });
     try {
       let response = await fetch(
         `https://api.thecatapi.com/v1/breeds/search?q=${query}`
       );
       let data = await response.json();
-      setData({ isLoadind: false, data: data });
+      setData({ isLoading: false, data: data });
     } catch (err) {
-      setData({ isLoadind: false, onError: err });
+      setData({ isLoading: false, onError: err });
       throw Error(err.message);
     }
-  }
+  }, [query]);
 
   useEffect(() => {
-    query && getDta();
-  }, [query]);
+    getData();
+  }, [getData, query]);
 
   return {
     ...data,
-    getDta,
+    getData,
     query,
     setQuery,
   };
