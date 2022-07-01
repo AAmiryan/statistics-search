@@ -1,4 +1,4 @@
-import { AutoComplete } from "antd";
+import { AutoComplete, Empty, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
@@ -6,79 +6,86 @@ import DataCard from "../Card/Card";
 import "./Search.css";
 
 const Search = () => {
+  const { isLoading, data, query, setQuery } = useFetch();
   const [options, setOptions] = useState([]);
   const [saerchParams, setSerarchParams] = useSearchParams();
 
-  const { isLoadind, data, query, setQuery } = useFetch();
-
   useEffect(() => {
-    const postQery = saerchParams.get("search");
-    if (postQery) {
-      let newPostQery = postQery.replace("+", " ");
-      setQuery(newPostQery);
+    const postQuery = saerchParams.get("search");
+    if (postQuery) {
+      let newPostQuery = postQuery.replace("+", " ");
+      setQuery(newPostQuery);
+    } else {
+      setQuery("");
     }
-  }, []);
+  }, [saerchParams, setQuery]);
 
-  const getAnaliticData = () => {
-    const data = JSON.parse(localStorage.getItem("statistics"))
+  const getAnaliticsData = () => {
+    return JSON.parse(localStorage.getItem("statistics"))
       ? JSON.parse(localStorage.getItem("statistics"))
       : [];
-    return data;
   };
 
   const onSearch = (searchText) => {
-    const options = data?.filter((cat) =>
+    const searchOptions = data?.filter((cat) =>
       cat.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    const optionsText = options?.map((option) => ({
+    const optionsText = searchOptions?.map((option) => ({
       value: option.name.toLowerCase(),
     }));
-
-    setOptions(!searchText ? [] : optionsText);
+    setOptions(searchText ? optionsText : []);
   };
 
   const onSelect = (selectData) => {
     setSerarchParams({ search: selectData });
-    const analiticData = getAnaliticData();
-    let resalt;
-    let statistic = analiticData.find((item) => item.label === selectData);
+    const analiticsData = getAnaliticsData();
+    let result;
+    let statistics = analiticsData.find((item) => item.label === selectData);
 
-    if (statistic) {
-      statistic.value = statistic.value + 1;
+    if (statistics) {
+      statistics.value = statistics.value + 1;
     } else {
-      statistic = {
+      statistics = {
         value: 1,
         label: selectData,
       };
     }
-    if (analiticData.length) {
-      if (statistic.value > 1) {
-        resalt = analiticData.map((item) => {
+    if (analiticsData.length) {
+      if (statistics.value > 1) {
+        result = analiticsData.map((item) => {
           if (item.label === selectData) {
-            return statistic;
+            return statistics;
           }
           return item;
         });
       } else {
-        resalt = [...analiticData, statistic];
+        result = [...analiticsData, statistics];
       }
     } else {
-      resalt = [statistic];
+      result = [statistics];
     }
 
-    return setInemLocalStorige(resalt);
+    return setItemLocalStorige(result);
   };
 
   const onChange = (searchedData) => {
     setQuery(searchedData);
   };
 
-  const setInemLocalStorige = (data) => {
+  const setItemLocalStorige = (data) => {
     localStorage.setItem("statistics", JSON.stringify(data));
   };
 
   return (
     <div className="searchContainer">
+      <div>
+        <h1>Search</h1>
+        <p> Search for a Breed by using of it’s name </p>
+        <p>
+          For example: arabian mau, abyssinian, aegean, ragamuffin, american
+          bobtails
+        </p>
+      </div>
       <div>
         <AutoComplete
           value={query}
@@ -90,12 +97,22 @@ const Search = () => {
           placeholder="Enter cat name"
         />
       </div>
-      <div className="cardContainer">
-        {data?.length === 1 &&
-          data?.map((item) => (
-            <DataCard data={item} isLoadind={isLoadind} key={item.id} />
-          ))}
-      </div>
+
+      {isLoading ? (
+        <Spin size="large" />
+      ) : data?.length ? (
+        <div className="cardContainer">
+          {data?.length === 1 &&
+            data?.map(
+              (item) =>
+                query === item.name.toLowerCase() && (
+                  <DataCard data={item} isLoading={isLoading} key={item.id} />
+                )
+            )}
+        </div>
+      ) : (
+        <Empty />
+      )}
     </div>
   );
 };
