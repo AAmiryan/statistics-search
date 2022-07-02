@@ -1,5 +1,5 @@
 import "./App.css";
-// import "antd/dist/antd.css";
+import "antd/dist/antd.css";
 import Main from "./Main/Main";
 import { BrowserRouter } from "react-router-dom";
 

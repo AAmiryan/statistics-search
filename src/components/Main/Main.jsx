@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Search from "../Search/Search";
 import SearchStatistics from "../Statistics/Statistics";
 import "./Main.css";
@@ -15,6 +15,7 @@ const Main = () => {
         </Link>
       </div>
       <Routes>
+        <Route exact path="/" element={<Navigate to="/" />}></Route>
         <Route path="/" element={<Search />} />
         <Route path="/statistics" element={<SearchStatistics />} />
       </Routes>
