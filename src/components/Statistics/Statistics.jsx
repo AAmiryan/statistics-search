@@ -18,7 +18,7 @@ const SearchStatistics = () => {
           ))}
         </div>
       ) : (
-        <Empty />
+        <Empty description="No Statistics" />
       )}
     </div>
   );
