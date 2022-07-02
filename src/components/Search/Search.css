@@ -1,17 +1,17 @@
-.saerchAutoComplete{
-    width: 50%;
-    margin: 40px 0;
+.saerchAutoComplete {
+  width: 50%;
+  margin: 40px 0;
 }
 
 .cardContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-.searchContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.searchContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

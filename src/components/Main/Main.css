@@ -1,7 +1,7 @@
 .mainContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .cardContainer {
@@ -11,15 +11,15 @@
   justify-content: center;
 }
 
-.navBar{
-    height: 50px;
-    background-color: rgb(59, 59, 235);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+.navBar {
+  height: 50px;
+  background-color: rgb(59, 59, 235);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.link{
-    color: aliceblue;
-    margin-right: 15px;
+.link {
+  color: aliceblue;
+  margin-right: 15px;
 }
